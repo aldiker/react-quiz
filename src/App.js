@@ -4,7 +4,7 @@ import Main from './components/Main'
 
 export default function App() {
     useEffect(() => {
-        fetch('http://localhost::8000/questions')
+        fetch('http://localhost:8000/questions')
             .then((res) => res.json())
             .then((data) => console.log(data))
             .catch((err) => console.log('Error'))
