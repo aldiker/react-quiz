@@ -101,9 +101,11 @@ h4 {
 
 progress {
     -webkit-appearance: none;
+    appearance: none;
     width: 100%;
     height: 12px;
     grid-column: 1 / -1;
+    border-radius: 100px;
 }
 
 ::-webkit-progress-bar {
@@ -111,6 +113,12 @@ progress {
     border-radius: 100px;
 }
 ::-webkit-progress-value {
+    background-color: var(--color-theme);
+    border-radius: 100px;
+}
+
+/* For Mozilla */
+progress::-moz-progress-bar {
     background-color: var(--color-theme);
     border-radius: 100px;
 }
