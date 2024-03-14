@@ -7,6 +7,7 @@ import StartScreen from './components/StartScreen'
 import Question from './components/Question'
 import NextButton from './components/NextButton'
 import Progress from './components/Progress'
+import FinishScreen from './components/FinishScreen'
 
 const initialState = {
     questions: [],
@@ -15,6 +16,7 @@ const initialState = {
     index: 0,
     answer: null,
     points: 0,
+    highscore: 0,
 }
 
 function reducer(state, action) {
@@ -25,6 +27,15 @@ function reducer(state, action) {
             return { ...state, status: 'error' }
         case 'start':
             return { ...state, status: 'active' }
+        case 'finish':
+            return {
+                ...state,
+                status: 'finish',
+                highscore:
+                    state.highscore < state.points
+                        ? state.points
+                        : state.highscore,
+            }
         case 'newAnswer':
             const question = state.questions.at(state.index)
             return {
@@ -37,6 +48,20 @@ function reducer(state, action) {
             }
         case 'nextQuestion':
             return { ...state, index: state.index + 1, answer: null }
+        case 'restart':
+            // return {
+            //     ...state,
+            //     status: 'active',
+            //     index: 0,
+            //     answer: null,
+            //     points: 0,
+            // }
+            return {
+                ...initialState,
+                questions: state.questions,
+                highscore: state.highscore,
+                status: 'ready',
+            }
         default:
             throw new Error('Action unknown')
     }
@@ -44,7 +69,7 @@ function reducer(state, action) {
 
 export default function App() {
     const [state, dispatch] = useReducer(reducer, initialState)
-    const { questions, status, index, answer, points } = state
+    const { questions, status, index, answer, points, highscore } = state
     const numQuestions = questions.length
 
     const numPoints = questions.reduce(
@@ -95,8 +120,21 @@ export default function App() {
                             dispatch={dispatch}
                             answer={answer}
                         />
-                        <NextButton dispatch={dispatch} answer={answer} />
+                        <NextButton
+                            dispatch={dispatch}
+                            answer={answer}
+                            index={index}
+                            numQuestions={numQuestions}
+                        />
                     </>
+                )}
+                {status === 'finish' && (
+                    <FinishScreen
+                        points={points}
+                        maxPossiblePoints={numPoints}
+                        highscore={highscore}
+                        dispatch={dispatch}
+                    />
                 )}
             </Main>
         </div>
