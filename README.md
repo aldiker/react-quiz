@@ -2,9 +2,16 @@
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+This app have JSON-server and client parts.
+We should run both parts together to work app correctly.
+
 ## Available Scripts
 
 In the project directory, you can run:
+
+### `npm run start-app`
+
+to start all parts together in one terminal.
 
 ### `npm run server`
 
